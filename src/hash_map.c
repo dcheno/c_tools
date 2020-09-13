@@ -1,32 +1,38 @@
-/*
- * hash_map.c
- *
- *  Created on: Sep 12, 2020
- *      Author: dan
- */
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "hash_map.h"
 #include "key_value.h"
+#include "linked_list.h"
 
-/* Returns an initialized hash map of type k: int, v: int. */
+/*
+ * TODO: this is pretty slow at large numbers of of key/values (see hash_map_test).
+ *       need to try expanding the buckets as the map grows.
+ */
+
 hash_map* HashMap() {
   hash_map* map = malloc(sizeof(hash_map));
   map->used_keys = 0;
-  map->keys = sizeof(map->buckets);
+  map->keys = sizeof(map->buckets) / sizeof(map->buckets[0]);
   return map;
 }
 
-/* For the given hash map, assign the given value to the given key */
 void set_key(hash_map* map, int key, int value) {
-  int hash = map->keys % key;
-  map->buckets[hash] = KeyValuePair(key, value);
+  int hash = key % map->keys;
+
+  linked_list_node* found = search_for_key(map->buckets[hash], key);
+
+  if (found) {
+	  found->key_value->value = value;
+  } else {
+	  linked_list_node* new_node = LinkedListNode(KeyValuePair(key, value), map->buckets[hash]);
+	  map->buckets[hash] = new_node;
+  }
 }
 
-/* For the given hash map, retrieve the value assigned to the given
-   key */
 int get_key(hash_map* map, int key) {
-  int hash = map->keys % key;
-  return map->buckets[hash]->value; // TODO: using linked list this will need to be checked.
+  int hash = key % map->keys;
+  linked_list_node* holder = search_for_key(map->buckets[hash], key);
+  return holder->key_value->value;
 }
 

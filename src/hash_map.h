@@ -1,25 +1,27 @@
-/*
- * hash_map.h
- *
- *  Created on: Sep 12, 2020
- *      Author: dan
- */
-
 #ifndef SRC_HASH_MAP_H_
 #define SRC_HASH_MAP_H_
 
-#include "key_value.h"
+#include "linked_list.h"
 
 typedef struct hash_map_struct {
 	int used_keys;
 	int keys;
-	key_value_pair* buckets[10]; // TODO: this should be an array of linked list nodes
+	linked_list_node* buckets[10];
 } hash_map;
 
+/**
+ * Returns a pointer to a newly initialized hash map of type: key -> int, value -> int.
+ */
 hash_map* HashMap();
 
+/**
+ * Set the value for the given key in the given hash map.
+ */
 void set_key(hash_map* map, int key, int value);
 
+/**
+ * Retrieve the stored value for the given key in the given hash map.
+ */
 int get_key(hash_map* map, int key);
 
 #endif /* SRC_HASH_MAP_H_ */
