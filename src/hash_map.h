@@ -4,9 +4,9 @@
 #include "linked_list.h"
 
 typedef struct hash_map_struct {
-	int used_keys;
-	int keys;
-	linked_list_node* buckets[10];
+	int num_entries;
+	int num_buckets;
+	linked_list_node** buckets;
 } hash_map;
 
 /**

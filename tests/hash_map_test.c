@@ -39,8 +39,8 @@ static void test_overwrite_same_key() {
 
 static void test_range() {
 	// More of a performance test than an actual unit test. Check how it performs with a large number
-	// of keys. Currently... not well.
-	int range = 100000;
+	// of keys.
+	int range = 10000000;
 	hash_map* map = HashMap();
 
 	struct timeval start;
@@ -55,7 +55,8 @@ static void test_range() {
 	struct timeval stop;
 	gettimeofday(&stop, NULL);
 	unsigned long elapsed = ((stop.tv_sec * 1000000) + stop.tv_usec) - ((start.tv_sec * 1000000) + start.tv_usec);
-	printf("%d sets and gets took %d microseconds\n", range, elapsed);
+	float elapsed_seconds = (float) elapsed/1000000;
+	printf("%d sets and gets took %f seconds\n", range, elapsed_seconds);
 	printf("--- PASSED test_range\n");
 }
 
